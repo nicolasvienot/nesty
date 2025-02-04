@@ -73,6 +73,7 @@ For deployment, you can use Docker. Ensure Docker is installed and running on yo
 #### Authentication
 
 - **POST /login**: Authenticate a user and receive a JWT token.
+- **POST /register**: Register a new user and receive a JWT token.
 
 #### Users
 
