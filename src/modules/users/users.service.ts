@@ -1,13 +1,24 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaClient, User as PrismaUser } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, CreateUserSchema } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
   private prisma = new PrismaClient();
 
   async create(createUserDto: CreateUserDto): Promise<PrismaUser> {
+    const validationResult = CreateUserSchema.safeParse(createUserDto);
+    if (!validationResult.success) {
+      throw new HttpException(
+        'Validation failed: ' +
+          validationResult.error.errors
+            .map((e) => `${e.path.join('.')} - ${e.message}`)
+            .join(', '),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     try {
       const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
       return await this.prisma.user.create({
@@ -35,6 +46,7 @@ export class UsersService {
     return this.prisma.user.findUnique({
       where: { id },
     });
+    // TODO: Handle errors (not found, etc.)
   }
 
   async update(
@@ -50,6 +62,7 @@ export class UsersService {
       if (isPrismaError(error) && error.code === 'P2002') {
         throw new HttpException('Email must be unique', HttpStatus.CONFLICT);
       }
+      // TODO: Handle other errors (not found, etc.)
       throw new HttpException(
         'Internal Server Error',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -61,6 +74,7 @@ export class UsersService {
     return this.prisma.user.delete({
       where: { id },
     });
+    // TODO: Handle errors (not found, etc.)
   }
 
   async verifyPassword(
