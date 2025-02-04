@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 
 # Install production dependencies.
-RUN yarn install --production
+RUN yarn install
 
 # Copy the rest of the application code to the container.
 COPY . .
