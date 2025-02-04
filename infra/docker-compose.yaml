@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  api:
+    build: ../
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL: '${DATABASE_URL}'
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/data:/data
+      - ./caddy/config:/config
