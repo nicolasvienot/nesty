@@ -7,11 +7,14 @@ WORKDIR /usr/src/app
 # Copy application dependency manifests to the container image.
 COPY package.json yarn.lock ./
 
-# Install production dependencies.
+# Install all dependencies (including devDependencies).
 RUN yarn install
 
 # Copy the rest of the application code to the container.
 COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
 
 # Build the application
 RUN yarn build
