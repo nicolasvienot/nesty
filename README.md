@@ -68,6 +68,28 @@ For deployment, you can use Docker. Ensure Docker is installed and running on yo
    docker run -p 3000:3000 nesty
    ```
 
+### API Endpoints
+
+#### Authentication
+
+- **POST /login**: Authenticate a user and receive a JWT token.
+
+#### Users
+
+- **POST /users**: Create a new user.
+- **GET /users**: Retrieve all users (requires authentication).
+- **GET /users/:id**: Retrieve a specific user by ID (requires authentication).
+- **PUT /users/:id**: Update a user's information (requires authentication).
+- **DELETE /users/:id**: Delete a user (requires authentication).
+
+#### Projects
+
+- **POST /projects**: Create a new project (requires authentication).
+- **GET /projects**: Retrieve all projects for the authenticated user.
+- **GET /projects/:id**: Retrieve a specific project by ID (requires authentication).
+- **PUT /projects/:id**: Update a project's information (requires authentication).
+- **DELETE /projects/:id**: Delete a project (requires authentication).
+
 ### License
 
 This project is licensed under the MIT License.
