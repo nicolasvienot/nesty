@@ -1,0 +1,7 @@
+api.nicolasvienot.com {
+    reverse_proxy api:8000
+}
+
+nicolasvienot.com {
+    reverse_proxy web:3000
+}

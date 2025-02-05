@@ -1,10 +1,10 @@
 {
   "name": "nesty-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Nesty api",
+  "author": "nicolasvienot",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "dev": "nest start --watch",
     "build": "nest build",
