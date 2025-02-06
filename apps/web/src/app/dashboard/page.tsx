@@ -1,14 +1,22 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
+import { useProjects, useDeleteProject } from "@/hooks/useProjects";
+import { useAuthContext } from "@/contexts/AuthContext";
 import PrivateRoute from "@/components/auth/PrivateRoute";
 import { LogoutButton } from "@/components/auth/LogoutButton";
-import Link from "next/link";
-import { useAuthContext } from "@/contexts/AuthContext";
-import { useProjects } from "@/hooks/useProjects";
+import { CreateProjectModal } from "@/components/projects/CreateProjectModal";
+import { DeleteProjectModal } from "@/components/projects/DeleteProjectModal";
+import { Project } from "@/types/project";
 
 export default function DashboardPage() {
   const { user } = useAuthContext();
   const { data: projects, isLoading } = useProjects();
+  const deleteProject = useDeleteProject();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
   return (
     <PrivateRoute>
@@ -43,7 +51,16 @@ export default function DashboardPage() {
             </div>
 
             <div className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">Your projects</h2>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-semibold">Your projects</h2>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md 
+                           hover:bg-blue-700 transition-colors"
+                >
+                  Create project
+                </button>
+              </div>
               {isLoading ? (
                 <div className="text-foreground/60">Loading projects...</div>
               ) : (
@@ -53,13 +70,13 @@ export default function DashboardPage() {
                       <p className="text-foreground/60">
                         You don&apos;t have any projects yet.
                       </p>
-                      <Link
-                        href="/projects/new"
+                      <button
+                        onClick={() => setIsModalOpen(true)}
                         className="mt-4 inline-block px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md 
                         hover:bg-blue-700 transition-colors duration-200 ease-in-out"
                       >
                         Create your first project
-                      </Link>
+                      </button>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -75,13 +92,16 @@ export default function DashboardPage() {
                             {project.repository}
                           </p>
                           <div className="mt-4 flex justify-end">
-                            <Link
-                              href={`/projects/${project.id}`}
-                              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md 
-                              hover:bg-blue-700 transition-colors duration-200 ease-in-out"
+                            <button
+                              onClick={() => {
+                                setProjectToDelete(project);
+                                setDeleteModalOpen(true);
+                              }}
+                              className="px-4 py-2 text-sm font-medium text-white bg-red-500/80 rounded-md 
+                              hover:bg-red-600/90 transition-colors duration-200 ease-in-out"
                             >
-                              View Project
-                            </Link>
+                              Remove project
+                            </button>
                           </div>
                         </div>
                       ))}
@@ -93,6 +113,23 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+      <CreateProjectModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      <DeleteProjectModal
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setProjectToDelete(null);
+        }}
+        project={projectToDelete}
+        onConfirm={() => {
+          if (projectToDelete) {
+            deleteProject.mutate(projectToDelete.id);
+          }
+        }}
+      />
     </PrivateRoute>
   );
 }
