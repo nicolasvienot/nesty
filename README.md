@@ -104,6 +104,7 @@ cd apps/web
 
 - **POST /auth/login**: Authenticate a user and receive a JWT token
 - **POST /auth/register**: Register a new user and receive a JWT token
+- **GET /auth/session**: Get the current authenticated user's session from JWT token
 
 ### Users
 

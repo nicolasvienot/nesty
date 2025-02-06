@@ -1,8 +1,18 @@
-import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UnauthorizedException,
+  Get,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthenticatedRequest } from './types/auth.types';
 
 @Controller('auth')
 export class AuthController {
@@ -29,5 +39,14 @@ export class AuthController {
   async register(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
     return this.authService.login(user);
+  }
+
+  // Secured for logged in users
+  @Get('session')
+  @UseGuards(AuthGuard('jwt'))
+  getSession(
+    @Request() req: AuthenticatedRequest,
+  ): AuthenticatedRequest['user'] {
+    return req.user;
   }
 }
