@@ -20,6 +20,10 @@ COPY apps/web ./apps/web
 # Set working directory to the web app
 WORKDIR /usr/src/app/apps/web
 
+# Set the API URL
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 # Build the Next.js application
 RUN yarn build
 
