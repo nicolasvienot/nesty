@@ -97,6 +97,7 @@ cd apps/web
 2. Environment variables needed:
    - `DATABASE_URL`: MongoDB connection string
    - `JWT_SECRET`: Secret key for JWT authentication
+   - `FRONTEND_URL`: URL of the Next.js frontend
 
 ## API Endpoints
 
