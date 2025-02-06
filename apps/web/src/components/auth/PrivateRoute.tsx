@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
-interface RouteGuardProps {
+type RouteGuardProps = {
   children: React.ReactNode;
-}
+};
 
 export default function RouteGuard({ children }: RouteGuardProps) {
   const { isAuthenticated, isLoading } = useAuthContext();

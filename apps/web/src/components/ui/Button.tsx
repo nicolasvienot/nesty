@@ -1,11 +1,11 @@
 import { ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary" | "outline";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
-}
+};
 
 export function Button({
   className,

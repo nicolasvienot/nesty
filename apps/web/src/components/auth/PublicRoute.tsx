@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
-interface PublicRouteProps {
+type PublicRouteProps = {
   children: React.ReactNode;
-}
+};
 
 export function PublicRoute({ children }: PublicRouteProps) {
   const { isAuthenticated, isLoading } = useAuthContext();

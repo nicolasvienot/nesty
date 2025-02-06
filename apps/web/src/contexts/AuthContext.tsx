@@ -7,25 +7,25 @@ import { useSession } from "@/hooks/useSession";
 import { authStorage } from "@/lib/authStorage";
 import { User } from "@/types/auth";
 
-interface AuthContextType {
+type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-}
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-interface LoginCredentials {
+type LoginCredentials = {
   email: string;
   password: string;
-}
+};
 
-interface LoginResponse {
+type LoginResponse = {
   access_token: string;
   user: User;
-}
+};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();

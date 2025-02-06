@@ -2,11 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { authStorage } from "@/lib/authStorage";
 
-interface User {
+type User = {
   id: string;
   email: string;
   name: string;
-}
+};
 
 export function useSession() {
   const {

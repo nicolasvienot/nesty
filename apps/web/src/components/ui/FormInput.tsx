@@ -1,7 +1,7 @@
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type FormInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
-}
+};
 
 export function FormInput({
   label,

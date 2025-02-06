@@ -1,20 +1,20 @@
-export interface LoginCredentials {
+export type LoginCredentials = {
   email: string;
   password: string;
-}
+};
 
-export interface RegisterCredentials extends LoginCredentials {
+export type RegisterCredentials = LoginCredentials & {
   name: string;
-}
+};
 
-export interface AuthResponse {
+export type AuthResponse = {
   access_token: string;
   user: {
     id: string;
     email: string;
     name: string;
   };
-}
+};
 
 export type User = {
   id: string;
