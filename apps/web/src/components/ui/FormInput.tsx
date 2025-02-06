@@ -1,3 +1,5 @@
+import { InputHTMLAttributes } from "react";
+
 type FormInputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
