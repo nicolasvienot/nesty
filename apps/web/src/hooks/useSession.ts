@@ -22,7 +22,7 @@ export function useSession() {
 
       try {
         const { data } = await api.get("/auth/session");
-        return data;
+        return data.user;
       } catch (error) {
         authStorage.clearToken();
         throw error;
