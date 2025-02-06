@@ -98,6 +98,7 @@ cd apps/web
    - `DATABASE_URL`: MongoDB connection string
    - `JWT_SECRET`: Secret key for JWT authentication
    - `FRONTEND_URL`: URL of the Next.js frontend
+   - `API_URL`: URL of the NestJS API
 
 ## API Endpoints
 

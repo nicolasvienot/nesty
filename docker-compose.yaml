@@ -16,6 +16,8 @@ services:
       dockerfile: apps/web/Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: "${API_URL}"
 
   caddy:
     image: caddy:latest
