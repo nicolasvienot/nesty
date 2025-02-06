@@ -6,14 +6,25 @@ import {
   RegisterCredentials,
   AuthResponse,
 } from "@/types/auth";
+import axios from "axios";
 
 export function useAuth() {
   const queryClient = useQueryClient();
 
   const login = useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
-      const { data } = await api.post<AuthResponse>("/auth/login", credentials);
-      return data;
+      try {
+        const { data } = await api.post<AuthResponse>(
+          "/auth/login",
+          credentials
+        );
+        return data;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.data?.message) {
+          throw new Error(error.response.data.message);
+        }
+        throw error;
+      }
     },
     onSuccess: (data) => {
       authStorage.setToken(data.access_token);
@@ -25,11 +36,18 @@ export function useAuth() {
 
   const register = useMutation({
     mutationFn: async (credentials: RegisterCredentials) => {
-      const { data } = await api.post<AuthResponse>(
-        "/auth/register",
-        credentials
-      );
-      return data;
+      try {
+        const { data } = await api.post<AuthResponse>(
+          "/auth/register",
+          credentials
+        );
+        return data;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.data?.message) {
+          throw new Error(error.response.data.message);
+        }
+        throw error;
+      }
     },
     onSuccess: (data) => {
       authStorage.setToken(data.access_token);
