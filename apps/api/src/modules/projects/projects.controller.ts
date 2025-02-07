@@ -7,52 +7,48 @@ import {
   Put,
   Delete,
   UseGuards,
-  Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
-import { AuthenticatedRequest } from '../auth/types/auth.types';
+import { User } from '../users/user.decorator';
 
 @Controller('projects')
+// Secure all routes
 @UseGuards(AuthGuard('jwt'))
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
-  // Secured for logged in users
   @Post()
   create(
-    @Request() req: AuthenticatedRequest,
+    @User('id') userId: string,
     @Body() createProjectDto: CreateProjectDto,
   ) {
-    return this.projectsService.create(req.user.id, createProjectDto);
+    console.log(userId);
+    return this.projectsService.create(userId, createProjectDto);
   }
 
-  // Secured for logged in users
   @Get()
-  findAll(@Request() req: AuthenticatedRequest) {
-    return this.projectsService.findAll(req.user.id);
+  findAll(@User('id') userId: string) {
+    return this.projectsService.findAll(userId);
   }
 
-  // Secured for logged in users
   @Get(':id')
-  findOne(@Request() req: AuthenticatedRequest, @Param('id') id: string) {
-    return this.projectsService.findOne(req.user.id, id);
+  findOne(@User('id') userId: string, @Param('id') projectId: string) {
+    return this.projectsService.findOne(userId, projectId);
   }
 
-  // Secured for logged in users
   @Put(':id')
   update(
-    @Request() req: AuthenticatedRequest,
-    @Param('id') id: string,
+    @User('id') userId: string,
+    @Param('id') projectId: string,
     @Body() updateProjectDto: CreateProjectDto,
   ) {
-    return this.projectsService.update(req.user.id, id, updateProjectDto);
+    return this.projectsService.update(userId, projectId, updateProjectDto);
   }
 
-  // Secured for logged in users
   @Delete(':id')
-  remove(@Request() req: AuthenticatedRequest, @Param('id') id: string) {
-    return this.projectsService.remove(req.user.id, id);
+  remove(@User('id') userId: string, @Param('id') projectId: string) {
+    return this.projectsService.remove(userId, projectId);
   }
 }
