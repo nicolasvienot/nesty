@@ -10,11 +10,12 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProjectsService } from './projects.service';
-import { CreateProjectDto } from './dto/create-project.dto';
 import { User } from '../users/user.decorator';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
+import { Project } from './projects.types';
 
 @Controller('projects')
-// Secure all routes
 @UseGuards(AuthGuard('jwt'))
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
@@ -23,18 +24,20 @@ export class ProjectsController {
   create(
     @User('id') userId: string,
     @Body() createProjectDto: CreateProjectDto,
-  ) {
-    console.log(userId);
+  ): Promise<Project> {
     return this.projectsService.create(userId, createProjectDto);
   }
 
   @Get()
-  findAll(@User('id') userId: string) {
+  findAll(@User('id') userId: string): Promise<Project[]> {
     return this.projectsService.findAll(userId);
   }
 
   @Get(':id')
-  findOne(@User('id') userId: string, @Param('id') projectId: string) {
+  findOne(
+    @User('id') userId: string,
+    @Param('id') projectId: string,
+  ): Promise<Project | null> {
     return this.projectsService.findOne(userId, projectId);
   }
 
@@ -42,13 +45,16 @@ export class ProjectsController {
   update(
     @User('id') userId: string,
     @Param('id') projectId: string,
-    @Body() updateProjectDto: CreateProjectDto,
-  ) {
+    @Body() updateProjectDto: UpdateProjectDto,
+  ): Promise<Project | null> {
     return this.projectsService.update(userId, projectId, updateProjectDto);
   }
 
   @Delete(':id')
-  remove(@User('id') userId: string, @Param('id') projectId: string) {
+  remove(
+    @User('id') userId: string,
+    @Param('id') projectId: string,
+  ): Promise<Project | null> {
     return this.projectsService.remove(userId, projectId);
   }
 }

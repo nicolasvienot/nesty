@@ -7,12 +7,13 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { UsersService } from '../users/users.service';
-import { AuthGuard } from '@nestjs/passport';
-import { AuthenticatedRequest } from './types/auth.types';
+import { AuthRequest, AuthResponse } from './auth.types';
+import { PublicUser } from '../users/users.types';
 
 @Controller('auth')
 export class AuthController {
@@ -21,9 +22,8 @@ export class AuthController {
     private readonly usersService: UsersService,
   ) {}
 
-  // Available to all
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
+  async login(@Body() loginDto: LoginDto): Promise<AuthResponse> {
     const user = await this.authService.validateUser(
       loginDto.email,
       loginDto.password,
@@ -34,19 +34,15 @@ export class AuthController {
     return this.authService.login(user);
   }
 
-  // Available to all
   @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
+  async register(@Body() createUserDto: CreateUserDto): Promise<AuthResponse> {
     const user = await this.usersService.create(createUserDto);
     return this.authService.login(user);
   }
 
-  // Secured for logged in users
   @Get('session')
   @UseGuards(AuthGuard('jwt'))
-  getSession(
-    @Request() req: AuthenticatedRequest,
-  ): AuthenticatedRequest['user'] {
+  getSession(@Request() req: AuthRequest): PublicUser {
     return req.user;
   }
 }

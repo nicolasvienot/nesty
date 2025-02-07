@@ -1,14 +1,14 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { PrismaClient, User as PrismaUser } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto, CreateUserSchema } from './dto/create-user.dto';
-
+import { CreateUserSchema } from './dto/create-user.dto';
+import { UsersRepository } from './users.repository';
+import { User, CreateUser, UpdateUser } from './users.types';
 @Injectable()
 export class UsersService {
-  private prisma = new PrismaClient();
+  constructor(private readonly usersRepository: UsersRepository) {}
 
-  async create(createUserDto: CreateUserDto): Promise<PrismaUser> {
-    const validationResult = CreateUserSchema.safeParse(createUserDto);
+  async create(payload: CreateUser): Promise<User> {
+    const validationResult = CreateUserSchema.safeParse(payload);
     if (!validationResult.success) {
       throw new HttpException(
         'Validation failed: ' +
@@ -18,14 +18,11 @@ export class UsersService {
         HttpStatus.BAD_REQUEST,
       );
     }
-
     try {
-      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-      return await this.prisma.user.create({
-        data: {
-          ...createUserDto,
-          password: hashedPassword,
-        },
+      const hashedPassword = await bcrypt.hash(payload.password, 10);
+      return await this.usersRepository.create({
+        ...payload,
+        password: hashedPassword,
       });
     } catch (error) {
       if (isPrismaError(error) && error.code === 'P2002') {
@@ -38,26 +35,17 @@ export class UsersService {
     }
   }
 
-  async findAll(): Promise<PrismaUser[]> {
-    return this.prisma.user.findMany();
+  async findAll(): Promise<User[]> {
+    return await this.usersRepository.findAll();
   }
 
-  async findOne(id: string): Promise<PrismaUser | null> {
-    return this.prisma.user.findUnique({
-      where: { id },
-    });
-    // TODO: Handle errors (not found, etc.)
+  async findOne(id: string): Promise<User | null> {
+    return await this.usersRepository.findOne(id);
   }
 
-  async update(
-    id: string,
-    updateUserDto: CreateUserDto,
-  ): Promise<PrismaUser | null> {
+  async update(id: string, payload: UpdateUser): Promise<User | null> {
     try {
-      return await this.prisma.user.update({
-        where: { id },
-        data: updateUserDto,
-      });
+      return await this.usersRepository.update(id, payload);
     } catch (error) {
       if (isPrismaError(error) && error.code === 'P2002') {
         throw new HttpException('Email must be unique', HttpStatus.CONFLICT);
@@ -70,11 +58,12 @@ export class UsersService {
     }
   }
 
-  async remove(id: string): Promise<PrismaUser | null> {
-    return this.prisma.user.delete({
-      where: { id },
-    });
-    // TODO: Handle errors (not found, etc.)
+  async remove(id: string): Promise<User | null> {
+    return await this.usersRepository.delete(id);
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return await this.usersRepository.findByEmail(email);
   }
 
   async verifyPassword(
@@ -83,15 +72,8 @@ export class UsersService {
   ): Promise<boolean> {
     return await bcrypt.compare(plainPassword, hashedPassword);
   }
-
-  async findByEmail(email: string): Promise<PrismaUser | null> {
-    return this.prisma.user.findUnique({
-      where: { email },
-    });
-  }
 }
 
-// Type guard to check if error is a Prisma error
 function isPrismaError(error: any): error is { code: string } {
   return typeof error === 'object' && error !== null && 'code' in error;
 }
