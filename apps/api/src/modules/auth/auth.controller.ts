@@ -5,15 +5,15 @@ import {
   UnauthorizedException,
   Get,
   UseGuards,
-  Request,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
+import { User } from '../users/user.decorator';
 import { LoginDto } from './dto/login.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { AuthRequest, AuthResponse } from './auth.types';
-import { PublicUser } from '../users/users.types';
+import { AuthResponse } from './auth.types';
+import { User as UserType, PublicUser } from '../users/users.types';
 
 @Controller('auth')
 export class AuthController {
@@ -42,7 +42,7 @@ export class AuthController {
 
   @Get('session')
   @UseGuards(AuthGuard('jwt'))
-  getSession(@Request() req: AuthRequest): PublicUser {
-    return req.user;
+  getSession(@User() user: UserType): PublicUser {
+    return user;
   }
 }
