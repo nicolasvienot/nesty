@@ -36,9 +36,6 @@ jobs:
             echo "Pruning stopped containers"
             docker container prune -f
 
-            echo "Pruning unused images older than 24h"
-            docker image prune -af --filter "until=24h"
-
             echo "Building and starting new containers"
             docker-compose up --build -d
 
