@@ -10,9 +10,16 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProjectsService } from './projects.service';
+import { UseZodValidation } from '../../shared/zod/use-zod-validation.decorator';
 import { User } from '../users/user.decorator';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
+import {
+  CreateProjectDto,
+  CreateProjectSchema,
+} from './dto/create-project.dto';
+import {
+  UpdateProjectDto,
+  UpdateProjectSchema,
+} from './dto/update-project.dto';
 import { Project } from './projects.types';
 
 @Controller('projects')
@@ -21,6 +28,7 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
+  @UseZodValidation(CreateProjectSchema)
   create(
     @User('id') userId: string,
     @Body() createProjectDto: CreateProjectDto,
@@ -42,6 +50,7 @@ export class ProjectsController {
   }
 
   @Put(':id')
+  @UseZodValidation(UpdateProjectSchema)
   update(
     @User('id') userId: string,
     @Param('id') projectId: string,

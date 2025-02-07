@@ -9,9 +9,10 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
+import { UseZodValidation } from '../../shared/zod/use-zod-validation.decorator';
 import { User } from '../users/user.decorator';
-import { LoginDto } from './dto/login.dto';
-import { CreateUserDto } from '../users/dto/create-user.dto';
+import { LoginDto, LoginSchema } from './dto/login.dto';
+import { CreateUserDto, CreateUserSchema } from '../users/dto/create-user.dto';
 import { AuthResponse } from './auth.types';
 import { User as UserType, PublicUser } from '../users/users.types';
 
@@ -23,6 +24,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @UseZodValidation(LoginSchema)
   async login(@Body() loginDto: LoginDto): Promise<AuthResponse> {
     const user = await this.authService.validateUser(
       loginDto.email,
@@ -35,6 +37,7 @@ export class AuthController {
   }
 
   @Post('register')
+  @UseZodValidation(CreateUserSchema)
   async register(@Body() createUserDto: CreateUserDto): Promise<AuthResponse> {
     const user = await this.usersService.create(createUserDto);
     return this.authService.login(user);
