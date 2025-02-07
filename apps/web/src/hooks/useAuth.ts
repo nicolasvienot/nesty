@@ -57,5 +57,11 @@ export function useAuth() {
     },
   });
 
-  return { login, register };
+  const logout = () => {
+    authStorage.clearToken();
+    api.defaults.headers.common["Authorization"] = null;
+    queryClient.setQueryData(["session"], null);
+  };
+
+  return { login, register, logout };
 }
