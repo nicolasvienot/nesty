@@ -13,7 +13,7 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-md z-50">
-      <div className="px-8">
+      <div className="px-4">
         <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center">
             <span className="text-xl font-bold">Nesty</span>
