@@ -1,33 +1,38 @@
-# To launch from root directory
+# --- Build Stage ---
+FROM node:20-alpine AS builder
 
-# Use the official Node.js 20 image.
-FROM node:20
-
-# Create and change to the app directory.
 WORKDIR /usr/src/app
 
-# Copy package files
-COPY package.json .
-COPY yarn.lock .
+# Copy dependency-related files first for better caching
+COPY package.json yarn.lock turbo.json ./
 COPY apps/api/package.json ./apps/api/
 
-# Install all dependencies (including devDependencies).
-RUN yarn install
+# Install dependencies (cached if package files don’t change)
+RUN yarn install --frozen-lockfile
 
-# Copy the rest of the application code to the container.
+# Copy the rest of the API source code
 COPY apps/api ./apps/api
-
-# Set working directory to the api app
-WORKDIR /usr/src/app/apps/api
-
-# Generate Prisma client
-RUN npx prisma generate
 
 # Build the application
 RUN yarn build
 
-# Expose the port the app runs on
+# --- Production Stage ---
+FROM node:20-alpine AS runner
+
+WORKDIR /usr/src/app/apps/api
+
+# Copy only necessary built files from builder stage
+COPY --from=builder /usr/src/app/apps/api/dist dist
+COPY --from=builder /usr/src/app/apps/api/package.json package.json
+COPY --from=builder /usr/src/app/node_modules node_modules
+COPY --from=builder /usr/src/app/apps/api/prisma prisma
+
+# Set production environment
+ENV NODE_ENV=production
+ENV PORT=8000
+
+# Expose port
 EXPOSE 8000
 
-# Run the web service on container startup.
-CMD [ "node", "dist/main.js" ]
+# Start API service
+CMD ["node", "dist/main.js"]
