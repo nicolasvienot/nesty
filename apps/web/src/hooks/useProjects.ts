@@ -7,13 +7,14 @@ type CreateProjectData = {
   repository: string;
 };
 
-export function useProjects() {
+export function useProjects({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery<Project[]>({
     queryKey: ["projects"],
     queryFn: async () => {
       const { data } = await api.get("/projects");
       return data;
     },
+    enabled,
   });
 }
 

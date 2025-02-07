@@ -12,7 +12,7 @@ import { Project } from "@/types/project";
 
 export default function DashboardPage() {
   const { user } = useAuthContext();
-  const { data: projects, isLoading } = useProjects();
+  const { data: projects, isLoading } = useProjects({ enabled: !!user });
   const deleteProject = useDeleteProject();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
