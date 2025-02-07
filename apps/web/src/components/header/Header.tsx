@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function Header() {
   const { isAuthenticated } = useAuthContext();
@@ -20,6 +21,7 @@ export function Header() {
           </Link>
 
           <nav className="flex items-center space-x-4">
+            <ThemeToggle />
             {isAuthenticated && (
               <>
                 {!isDashboard && (
