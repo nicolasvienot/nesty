@@ -1,18 +1,13 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { User as UserType } from '@prisma/client';
-
-export type AuthenticatedUser = Omit<UserType, 'password'>;
-
-export interface AuthenticatedRequest extends Request {
-  user: AuthenticatedUser;
-}
+import { PublicUser } from '@/modules/users/users.types';
+import { AuthRequest } from '@/modules/auth/auth.types';
 
 export const User = createParamDecorator(
   (
-    data: keyof AuthenticatedUser,
+    data: keyof PublicUser,
     ctx: ExecutionContext,
-  ): AuthenticatedUser[keyof AuthenticatedUser] | AuthenticatedUser => {
-    const request = ctx.switchToHttp().getRequest<AuthenticatedRequest>();
+  ): PublicUser[keyof PublicUser] | PublicUser => {
+    const request = ctx.switchToHttp().getRequest<AuthRequest>();
 
     if (data) {
       return request.user[data];

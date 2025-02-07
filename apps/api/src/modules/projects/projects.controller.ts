@@ -9,18 +9,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ProjectsService } from './projects.service';
-import { UseZodValidation } from '../../shared/zod/use-zod-validation.decorator';
-import { User } from '../users/user.decorator';
+import { ProjectsService } from '@/modules/projects/projects.service';
+import { UseZodValidation } from '@/shared/zod/use-zod-validation.decorator';
+import { User } from '@/modules/users/user.decorator';
 import {
   CreateProjectDto,
   CreateProjectSchema,
-} from './dto/create-project.dto';
+} from '@/modules/projects/dto/create-project.dto';
 import {
   UpdateProjectDto,
   UpdateProjectSchema,
-} from './dto/update-project.dto';
-import { Project } from './projects.types';
+} from '@/modules/projects/dto/update-project.dto';
+import { Project } from '@/modules/projects/projects.types';
 
 @Controller('projects')
 @UseGuards(AuthGuard('jwt'))

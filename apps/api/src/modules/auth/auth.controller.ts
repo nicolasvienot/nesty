@@ -9,16 +9,22 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
-import { UseZodValidation } from '../../shared/zod/use-zod-validation.decorator';
-import { User } from '../users/user.decorator';
-import { handlePrismaError } from '../../utils/prisma.util';
-import { LoginDto, LoginSchema } from './dto/login.dto';
-import { CreateUserDto, CreateUserSchema } from '../users/dto/create-user.dto';
-import { COOKIE_NAME, cookieConfig } from './strategies/cookie.config';
-import { AuthResponse } from './auth.types';
-import { User as UserType, PublicUser } from '../users/users.types';
+import { AuthService } from '@/modules/auth/auth.service';
+import { UsersService } from '@/modules/users/users.service';
+import { UseZodValidation } from '@/shared/zod/use-zod-validation.decorator';
+import { User } from '@/modules/users/user.decorator';
+import { handlePrismaError } from '@/utils/prisma.util';
+import { LoginDto, LoginSchema } from '@/modules/auth/dto/login.dto';
+import {
+  CreateUserDto,
+  CreateUserSchema,
+} from '@/modules/users/dto/create-user.dto';
+import {
+  COOKIE_NAME,
+  cookieConfig,
+} from '@/modules/auth/strategies/cookie.config';
+import { AuthResponse } from '@/modules/auth/auth.types';
+import { User as UserType, PublicUser } from '@/modules/users/users.types';
 
 @Controller('auth')
 export class AuthController {

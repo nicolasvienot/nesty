@@ -1,12 +1,11 @@
 import { Request } from 'express';
-import { PublicUser } from '../users/users.types';
+import { PublicUser } from '@/modules/users/users.types';
 
 export type AuthRequest = Request & {
   user: PublicUser;
 };
 
 export type AuthResponse = {
-  access_token: string;
   user: PublicUser;
 };
 

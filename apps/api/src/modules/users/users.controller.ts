@@ -9,11 +9,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { UseZodValidation } from '../../shared/zod/use-zod-validation.decorator';
-import { UsersService } from './users.service';
-import { CreateUserDto, CreateUserSchema } from './dto/create-user.dto';
-import { UpdateUserDto, UpdateUserSchema } from './dto/update-user.dto';
-import { User } from './users.types';
+import { UseZodValidation } from '@/shared/zod/use-zod-validation.decorator';
+import { UsersService } from '@/modules/users/users.service';
+import {
+  CreateUserDto,
+  CreateUserSchema,
+} from '@/modules/users/dto/create-user.dto';
+import {
+  UpdateUserDto,
+  UpdateUserSchema,
+} from '@/modules/users/dto/update-user.dto';
+import { User } from '@/modules/users/users.types';
 
 @Controller('users')
 export class UsersController {
@@ -45,7 +51,6 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User | null> {
     return this.usersService.update(id, updateUserDto);
-    // Handle prisma error if used
   }
 
   @Delete(':id')
