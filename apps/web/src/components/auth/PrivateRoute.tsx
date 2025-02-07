@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 type RouteGuardProps = {
@@ -10,7 +10,7 @@ type RouteGuardProps = {
 };
 
 export default function RouteGuard({ children }: RouteGuardProps) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuthContext();
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
