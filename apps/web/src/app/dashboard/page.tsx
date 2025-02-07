@@ -27,7 +27,7 @@ export default function DashboardPage() {
           <div className="grid gap-6">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
               <h2 className="text-2xl font-semibold mb-4">
-                Welcome {user?.name}!
+                Welcome {user?.name}
               </h2>
               <div className="space-y-2">
                 <p className="text-foreground/60">Email: {user?.email}</p>
@@ -35,8 +35,8 @@ export default function DashboardPage() {
             </div>
 
             <div className="mt-8">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold">Your projects</h2>
+              <h2 className="text-2xl font-semibold mb-4">Projects</h2>
+              <div className="mb-6">
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md 
@@ -45,8 +45,16 @@ export default function DashboardPage() {
                   Create project
                 </button>
               </div>
+
               {isLoading ? (
-                <div className="text-foreground/60">Loading projects...</div>
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+                  <div className="animate-pulse flex space-x-4">
+                    <div className="flex-1 space-y-4 py-1">
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <>
                   {projects?.length === 0 ? (
@@ -54,13 +62,6 @@ export default function DashboardPage() {
                       <p className="text-foreground/60">
                         You don&apos;t have any projects yet.
                       </p>
-                      <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="mt-4 inline-block px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md 
-                        hover:bg-blue-700 transition-colors duration-200 ease-in-out"
-                      >
-                        Create your first project
-                      </button>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
