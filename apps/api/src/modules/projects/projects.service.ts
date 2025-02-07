@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ProjectsRepository } from './projects.repository';
 import { Project, CreateProject, UpdateProject } from './projects.types';
 
@@ -15,11 +15,7 @@ export class ProjectsService {
   }
 
   async findOne(userId: string, id: string): Promise<Project | null> {
-    const project = await this.projectsRepository.findOne(userId, id);
-    if (!project) {
-      throw new NotFoundException(`Project with ID ${id} not found`);
-    }
-    return project;
+    return await this.projectsRepository.findOne(userId, id);
   }
 
   async update(

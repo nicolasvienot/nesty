@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { UseZodValidation } from '../../shared/zod/use-zod-validation.decorator';
 import { User } from '../users/user.decorator';
+import { handlePrismaError } from '../../utils/prisma.util';
 import { LoginDto, LoginSchema } from './dto/login.dto';
 import { CreateUserDto, CreateUserSchema } from '../users/dto/create-user.dto';
 import { AuthResponse } from './auth.types';
@@ -39,8 +40,12 @@ export class AuthController {
   @Post('register')
   @UseZodValidation(CreateUserSchema)
   async register(@Body() createUserDto: CreateUserDto): Promise<AuthResponse> {
-    const user = await this.usersService.create(createUserDto);
-    return this.authService.login(user);
+    try {
+      const user = await this.usersService.create(createUserDto);
+      return this.authService.login(user);
+    } catch (error) {
+      handlePrismaError(error);
+    }
   }
 
   @Get('session')

@@ -45,6 +45,7 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User | null> {
     return this.usersService.update(id, updateUserDto);
+    // Handle prisma error if used
   }
 
   @Delete(':id')
