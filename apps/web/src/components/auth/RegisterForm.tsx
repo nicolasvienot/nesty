@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { FormInput } from "@/components/ui/FormInput";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { RegisterCredentials } from "@/types/auth";
+import { RegisterRequest } from "@/types";
 
 export default function RegisterForm() {
   const { register } = useAuth();
@@ -18,14 +18,14 @@ export default function RegisterForm() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const credentials: RegisterCredentials = {
+    const userData: RegisterRequest = {
       name: formData.get("name") as string,
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };
 
     try {
-      await register.mutateAsync(credentials);
+      await register.mutateAsync(userData);
       router.push("/dashboard");
     } catch (err) {
       if (err instanceof Error) {

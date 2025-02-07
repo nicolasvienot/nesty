@@ -1,11 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
-import { Project } from "@/types/project";
-
-type CreateProjectData = {
-  name: string;
-  repository: string;
-};
+import { Project, CreateProjectRequest } from "@/types";
 
 export function useProjects({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery<Project[]>({
@@ -22,7 +17,7 @@ export function useCreateProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (project: CreateProjectData) => {
+    mutationFn: async (project: CreateProjectRequest) => {
       const { data } = await api.post("/projects", project);
       return data;
     },

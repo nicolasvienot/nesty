@@ -1,18 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "@/lib/api";
-import { authStorage } from "@/lib/authStorage";
-import {
-  LoginCredentials,
-  RegisterCredentials,
-  AuthResponse,
-} from "@/types/auth";
 import axios from "axios";
+import api from "@/lib/api";
+import { LoginRequest, RegisterRequest, AuthResponse } from "@/types";
 
 export function useAuth() {
   const queryClient = useQueryClient();
 
   const login = useMutation({
-    mutationFn: async (credentials: LoginCredentials) => {
+    mutationFn: async (credentials: LoginRequest) => {
       try {
         const { data } = await api.post<AuthResponse>(
           "/auth/login",
@@ -27,19 +22,16 @@ export function useAuth() {
       }
     },
     onSuccess: (data) => {
-      authStorage.setToken(data.access_token);
-      api.defaults.headers.common["Authorization"] =
-        `Bearer ${data.access_token}`;
       queryClient.setQueryData(["session"], data.user);
     },
   });
 
   const register = useMutation({
-    mutationFn: async (credentials: RegisterCredentials) => {
+    mutationFn: async (userData: RegisterRequest) => {
       try {
         const { data } = await api.post<AuthResponse>(
           "/auth/register",
-          credentials
+          userData
         );
         return data;
       } catch (error: unknown) {
@@ -50,16 +42,12 @@ export function useAuth() {
       }
     },
     onSuccess: (data) => {
-      authStorage.setToken(data.access_token);
-      api.defaults.headers.common["Authorization"] =
-        `Bearer ${data.access_token}`;
       queryClient.setQueryData(["session"], data.user);
     },
   });
 
-  const logout = () => {
-    authStorage.clearToken();
-    api.defaults.headers.common["Authorization"] = null;
+  const logout = async () => {
+    await api.post("/auth/logout");
     queryClient.setQueryData(["session"], null);
   };
 

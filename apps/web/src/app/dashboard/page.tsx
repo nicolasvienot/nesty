@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
 import { useProjects, useDeleteProject } from "@/hooks/useProjects";
-import { useAuthContext } from "@/contexts/AuthContext";
 import PrivateRoute from "@/components/auth/PrivateRoute";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { CreateProjectModal } from "@/components/projects/CreateProjectModal";
 import { DeleteProjectModal } from "@/components/projects/DeleteProjectModal";
-import { Project } from "@/types/project";
+import { Project } from "@/types";
 
 export default function DashboardPage() {
-  const { user } = useAuthContext();
+  const { user } = useAuth();
   const { data: projects, isLoading } = useProjects({ enabled: !!user });
   const deleteProject = useDeleteProject();
   const [isModalOpen, setIsModalOpen] = useState(false);

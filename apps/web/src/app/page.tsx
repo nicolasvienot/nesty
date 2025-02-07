@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function HomePage() {
-  const { isAuthenticated, isLoading } = useAuthContext();
+  const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return (

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { FormInput } from "@/components/ui/FormInput";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { LoginCredentials } from "@/types/auth";
+import { LoginRequest } from "@/types";
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -18,7 +18,7 @@ export default function LoginForm() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const credentials: LoginCredentials = {
+    const credentials: LoginRequest = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };

@@ -2,10 +2,8 @@
 
 import { createContext, useContext, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import api from "@/lib/api";
 import { useSession } from "@/hooks/useSession";
-import { authStorage } from "@/lib/authStorage";
-import { User } from "@/types/auth";
+import { User } from "@/types";
 
 type AuthContextType = {
   user: User | null;
@@ -19,11 +17,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const token = authStorage.getToken();
-    if (token) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      queryClient.invalidateQueries({ queryKey: ["session"] });
-    }
+    queryClient.invalidateQueries({ queryKey: ["session"] });
   }, [queryClient]);
 
   const { user, isLoading, isAuthenticated } = useSession();
@@ -41,10 +35,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useAuthContext() {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuthContext must be used within an AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

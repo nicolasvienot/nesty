@@ -1,6 +1,6 @@
 "use client";
 
-import { Project } from "@/types/project";
+import { Project } from "@/types";
 
 interface DeleteProjectModalProps {
   isOpen: boolean;

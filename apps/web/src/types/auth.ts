@@ -1,23 +1,16 @@
-export type LoginCredentials = {
+import { User } from "./user";
+
+export type LoginRequest = {
   email: string;
   password: string;
 };
 
-export type RegisterCredentials = LoginCredentials & {
+export type RegisterRequest = {
+  email: string;
   name: string;
+  password: string;
 };
 
 export type AuthResponse = {
-  access_token: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-  };
-};
-
-export type User = {
-  id: string;
-  email: string;
-  name: string;
+  user: User;
 };

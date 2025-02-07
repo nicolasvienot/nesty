@@ -1,33 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import api from "@/lib/api";
-import { authStorage } from "@/lib/authStorage";
-
-type User = {
-  id: string;
-  email: string;
-  name: string;
-};
+import { User } from "@/types";
 
 export function useSession() {
   const {
     data: user,
     isLoading,
     error,
-    refetch,
   } = useQuery<User>({
     queryKey: ["session"],
     queryFn: async () => {
-      const token = authStorage.getToken();
-      if (!token) return null;
-
       try {
         const { data } = await api.get("/auth/session");
         return data;
       } catch (error) {
-        authStorage.clearToken();
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+          return null;
+        }
         throw error;
       }
     },
+    retry: (failureCount, error) => {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        return false;
+      }
+      return failureCount < 3;
+    },
+    staleTime: 1000 * 60 * 55,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 
   return {
@@ -35,6 +38,5 @@ export function useSession() {
     isLoading,
     error,
     isAuthenticated: !!user,
-    refetchSession: refetch,
   };
 }
