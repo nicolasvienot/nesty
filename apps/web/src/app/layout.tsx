@@ -28,7 +28,7 @@ export default async function RootLayout({
       className={`${inter.className} ${initialTheme === "dark" ? "dark" : ""}`}
       suppressHydrationWarning
     >
-      <body className="antialiased min-h-screen bg-background text-foreground">
+      <body className="antialiased min-h-[100dvh] bg-background text-foreground">
         <ThemeProvider initialTheme={initialTheme}>
           <ClientProviders>{children}</ClientProviders>
         </ThemeProvider>

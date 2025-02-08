@@ -33,4 +33,11 @@ body {
   background: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
 }

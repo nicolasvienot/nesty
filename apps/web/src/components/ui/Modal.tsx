@@ -26,6 +26,7 @@ export function Modal({ title, children, footer, ...props }: ModalProps) {
       disableAnimation
       classNames={{
         closeButton: "hover:bg-transparent active:bg-transparent mt-1 mr-1",
+        base: "mx-4",
       }}
     >
       <ModalContent>
