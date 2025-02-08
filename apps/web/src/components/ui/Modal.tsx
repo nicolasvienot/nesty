@@ -21,6 +21,7 @@ export function Modal({ title, children, footer, ...props }: ModalProps) {
       radius="md"
       shadow="sm"
       backdrop="blur"
+      placement="center"
       scrollBehavior="inside"
       disableAnimation
       classNames={{

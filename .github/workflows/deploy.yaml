@@ -33,11 +33,11 @@ jobs:
             echo "Stopping old containers..."
             docker-compose down
 
-            echo "Pruning stopped containers"
-            docker container prune -f
-
             echo "Building and starting new containers"
             docker-compose up --build -d
+
+            echo "Cleaning up unused Docker resources..."
+            docker system prune -af --volumes
 
             echo "Deployment successful!"
           EOF
