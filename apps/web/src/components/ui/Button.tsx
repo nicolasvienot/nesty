@@ -1,28 +1,23 @@
 "use client";
 
-import { Button as HeroButton } from "@heroui/react";
-import { ButtonProps } from "@heroui/react";
-
-export interface CustomButtonProps extends ButtonProps {
-  // Add any additional custom props here
-  variant?:
-    | "solid"
-    | "bordered"
-    | "light"
-    | "flat"
-    | "faded"
-    | "shadow"
-    | "ghost";
-}
+import { Button as HeroButton, ButtonProps } from "@heroui/react";
 
 export function Button({
   children,
   className,
   variant = "solid",
+  color = "primary",
+  radius = "sm",
   ...props
-}: CustomButtonProps) {
+}: ButtonProps) {
   return (
-    <HeroButton variant={variant} className={className} {...props}>
+    <HeroButton
+      variant={variant}
+      color={color}
+      radius={radius}
+      className={className}
+      {...props}
+    >
       {children}
     </HeroButton>
   );

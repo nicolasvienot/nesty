@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useDisclosure } from "@heroui/react";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useProjects, useDeleteProject } from "@/hooks/useProjects";
 import { Header } from "@/components/header/Header";
 import PrivateRoute from "@/components/auth/PrivateRoute";
+import { Button } from "@/components/ui/Button";
 import { CreateProjectModal } from "@/components/projects/CreateProjectModal";
 import { DeleteProjectModal } from "@/components/projects/DeleteProjectModal";
 import { Project } from "@/types";
@@ -13,9 +15,23 @@ export default function DashboardPage() {
   const { user } = useAuthContext();
   const { data: projects, isLoading } = useProjects({ enabled: !!user });
   const deleteProject = useDeleteProject();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const createModal = useDisclosure();
+  const deleteModal = useDisclosure();
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
+
+  const handleDeleteClick = (project: Project) => {
+    setProjectToDelete(project);
+    deleteModal.onOpen();
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (projectToDelete) {
+      await deleteProject.mutateAsync(projectToDelete.id);
+      deleteModal.onClose();
+      setProjectToDelete(null);
+    }
+  };
 
   return (
     <PrivateRoute>
@@ -37,15 +53,8 @@ export default function DashboardPage() {
             <div className="mt-8">
               <h2 className="text-2xl font-semibold mb-4">Projects</h2>
               <div className="mb-6">
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md 
-                           hover:bg-blue-700 transition-colors"
-                >
-                  Create project
-                </button>
+                <Button onPress={createModal.onOpen}>Create project</Button>
               </div>
-
               {isLoading ? (
                 <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
                   <div className="animate-pulse flex space-x-4">
@@ -77,16 +86,13 @@ export default function DashboardPage() {
                             {project.repository}
                           </p>
                           <div className="mt-4 flex justify-end">
-                            <button
-                              onClick={() => {
-                                setProjectToDelete(project);
-                                setDeleteModalOpen(true);
-                              }}
-                              className="px-4 py-2 text-sm font-medium text-white bg-red-500/80 rounded-md 
-                              hover:bg-red-600/90 transition-colors duration-200 ease-in-out"
+                            <Button
+                              onPress={() => handleDeleteClick(project)}
+                              variant="flat"
+                              color="danger"
                             >
                               Remove project
-                            </button>
+                            </Button>
                           </div>
                         </div>
                       ))}
@@ -99,21 +105,14 @@ export default function DashboardPage() {
         </div>
       </div>
       <CreateProjectModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={createModal.isOpen}
+        onClose={createModal.onClose}
       />
       <DeleteProjectModal
-        isOpen={deleteModalOpen}
-        onClose={() => {
-          setDeleteModalOpen(false);
-          setProjectToDelete(null);
-        }}
+        isOpen={deleteModal.isOpen}
+        onClose={deleteModal.onClose}
         project={projectToDelete}
-        onConfirm={() => {
-          if (projectToDelete) {
-            deleteProject.mutate(projectToDelete.id);
-          }
-        }}
+        onConfirm={handleDeleteConfirm}
       />
     </PrivateRoute>
   );

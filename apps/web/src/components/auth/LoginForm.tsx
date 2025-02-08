@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/Button";
 import { FormInput } from "@/components/ui/FormInput";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LoginRequest } from "@/types";
@@ -54,14 +55,10 @@ export default function LoginForm() {
         required
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <button
-        type="submit"
-        disabled={login.isPending}
-        className="w-full p-3 text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none disabled:opacity-50 flex items-center justify-center"
-      >
+      <Button type="submit" className="w-full" isDisabled={login.isPending}>
         {login.isPending && <LoadingSpinner size="sm" className="mr-2" />}
         {login.isPending ? "Logging in..." : "Login"}
-      </button>
+      </Button>
     </form>
   );
 }

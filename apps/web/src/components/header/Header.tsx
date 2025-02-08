@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/Button";
 import { SwitchTheme } from "@/components/theme/SwitchTheme";
 
 export function Header() {
@@ -19,7 +20,7 @@ export function Header() {
           <Link href="/" className="flex items-center">
             <span className="text-xl font-bold">Nesty</span>
           </Link>
-          <nav className="flex items-center space-x-4">
+          <nav className="flex items-center space-x-2">
             {isAuthenticated && (
               <>
                 {!isDashboard && (
@@ -30,12 +31,14 @@ export function Header() {
                     Dashboard
                   </Link>
                 )}
-                <button
-                  onClick={() => logout()}
-                  className="text-sm font-medium text-red-500 hover:text-red-600"
+                <Button
+                  onPress={() => logout()}
+                  variant="light"
+                  color="default"
+                  size="sm"
                 >
-                  Sign out
-                </button>
+                  Logout
+                </Button>
               </>
             )}
             <SwitchTheme />
