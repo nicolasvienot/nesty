@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
-import { ThemeSwitch } from "@/components/theme/ThemeSwitch";
+import { SwitchTheme } from "@/components/theme/SwitchTheme";
 
 export function Header() {
   const { isAuthenticated } = useAuthContext();
@@ -38,7 +38,7 @@ export function Header() {
                 </button>
               </>
             )}
-            <ThemeSwitch />
+            <SwitchTheme />
           </nav>
         </div>
       </div>
