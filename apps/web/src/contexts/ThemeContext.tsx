@@ -1,8 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { Theme } from "@/types/theme";
 
-type Theme = "dark" | "light";
+type ThemeState = {
+  userPreference: Theme;
+  systemPreference: Theme;
+};
 
 type ThemeContextType = {
   theme: Theme;
@@ -11,17 +21,43 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+const getThemeFromCookie = () => {
+  const themeCookie = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("theme="));
+  return themeCookie ? (themeCookie.split("=")[1] as Theme) : undefined;
+};
+
+interface ThemeProviderProps {
+  children: React.ReactNode;
+  initialTheme?: Theme;
+}
+
+export function ThemeProvider({ children, initialTheme }: ThemeProviderProps) {
+  const [themeState, setThemeState] = useState<ThemeState>(() => ({
+    userPreference:
+      initialTheme ||
+      (typeof window !== "undefined" ? getThemeFromCookie() : undefined),
+    systemPreference:
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light",
+  }));
+
+  const theme = themeState.userPreference ?? themeState.systemPreference;
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") as Theme | null;
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
-      ? "dark"
-      : "light";
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      setThemeState((prev) => ({
+        ...prev,
+        systemPreference: e.matches ? "dark" : "light",
+      }));
+    };
 
-    setTheme(storedTheme ?? systemTheme);
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   useEffect(() => {
@@ -30,12 +66,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
+    if (themeState.userPreference) {
+      document.cookie = `theme=${themeState.userPreference}; path=/; max-age=31536000;`;
+    }
+  }, [theme, themeState.userPreference]);
+
+  const toggleTheme = useCallback(() => {
+    setThemeState((prev) => ({
+      ...prev,
+      userPreference: theme === "dark" ? "light" : "dark",
+    }));
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

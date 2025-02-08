@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 type PublicRouteProps = {
@@ -10,7 +10,7 @@ type PublicRouteProps = {
 };
 
 export function PublicRoute({ children }: PublicRouteProps) {
-  const { isAuthenticated, isLoading } = useAuthContext();
+  const { isAuthenticated, isLoading } = useAuthentication();
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {

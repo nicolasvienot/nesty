@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { Header } from "@/components/header/Header";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 import { Button } from "@/components/ui/Button";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function HomePage() {
-  const { isAuthenticated, isLoading } = useAuthContext();
+  const { isAuthenticated, isLoading } = useAuthentication();
 
   if (isLoading) {
     return (

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useDisclosure } from "@heroui/react";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 import { useProjects, useDeleteProject } from "@/hooks/useProjects";
 import { Header } from "@/components/header/Header";
 import PrivateRoute from "@/components/auth/PrivateRoute";
@@ -13,7 +13,7 @@ import { DeleteProjectModal } from "@/components/projects/DeleteProjectModal";
 import { Project } from "@/types";
 
 export default function DashboardPage() {
-  const { user } = useAuthContext();
+  const { user } = useAuthentication();
   const { data: projects, isLoading } = useProjects({ enabled: !!user });
   const deleteProject = useDeleteProject();
 

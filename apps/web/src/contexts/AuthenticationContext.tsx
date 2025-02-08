@@ -5,15 +5,21 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/hooks/useSession";
 import { User } from "@/types";
 
-type AuthContextType = {
+type AuthenticationContextType = {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthenticationContext = createContext<
+  AuthenticationContextType | undefined
+>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthenticationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -23,7 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { user, isLoading, isAuthenticated } = useSession();
 
   return (
-    <AuthContext.Provider
+    <AuthenticationContext.Provider
       value={{
         user: user ?? null,
         isLoading,
@@ -31,14 +37,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </AuthenticationContext.Provider>
   );
 }
 
-export function useAuthContext() {
-  const context = useContext(AuthContext);
+export function useAuthentication() {
+  const context = useContext(AuthenticationContext);
   if (context === undefined) {
-    throw new Error("useAuthContext must be used within an AuthProvider");
+    throw new Error("useAuthentication must be used within an AuthProvider");
   }
   return context;
 }

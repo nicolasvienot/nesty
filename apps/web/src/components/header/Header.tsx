@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuthentication } from "@/contexts/AuthenticationContext";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/Button";
 import { SwitchTheme } from "@/components/theme/SwitchTheme";
 
 export function Header() {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useAuthentication();
   const { logout } = useAuth();
   const pathname = usePathname();
   const isDashboard = pathname === "/dashboard";
