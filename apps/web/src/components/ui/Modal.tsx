@@ -9,16 +9,16 @@ import {
   ModalProps as HeroModalProps,
 } from "@heroui/react";
 
-interface ModalProps extends HeroModalProps {
+type ModalProps = HeroModalProps & {
   title?: string;
   footer?: React.ReactNode;
-}
+};
 
 export function Modal({ title, children, footer, ...props }: ModalProps) {
   return (
     <HeroModal
       {...props}
-      radius="sm"
+      radius="md"
       shadow="sm"
       backdrop="blur"
       scrollBehavior="inside"

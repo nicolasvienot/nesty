@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/Button";
-import { FormInput } from "@/components/ui/FormInput";
+import { Input } from "@/components/ui/Input";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LoginRequest } from "@/types";
 
@@ -39,15 +39,15 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
-      <FormInput
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <Input
         type="email"
         name="email"
         label="Email"
         placeholder="Enter your email"
         required
       />
-      <FormInput
+      <Input
         type="password"
         name="password"
         label="Password"
@@ -57,7 +57,7 @@ export default function LoginForm() {
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <Button type="submit" className="w-full" isDisabled={login.isPending}>
         {login.isPending && <LoadingSpinner size="sm" className="mr-2" />}
-        {login.isPending ? "Logging in..." : "Login"}
+        {login.isPending ? "Signing in..." : "Sign in"}
       </Button>
     </form>
   );

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Header } from "@/components/header/Header";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/Button";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function HomePage() {
@@ -19,7 +20,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-24">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 pt-24">
         <div className="w-full max-w-md space-y-8 text-center">
           <div className="space-y-4">
             <h1 className="text-5xl font-extrabold tracking-tight text-foreground">
@@ -31,29 +32,37 @@ export default function HomePage() {
                 : "Get started by signing in or creating an account"}
             </p>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-2">
             {isAuthenticated ? (
-              <Link
+              <Button
+                as={Link}
                 href="/dashboard"
-                className="w-full p-3 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 inline-block font-medium transition-colors"
+                color="primary"
+                className="w-full"
               >
                 Access the dashboard
-              </Link>
+              </Button>
             ) : (
               <>
-                <Link
+                <Button
+                  as={Link}
                   href="/login"
-                  className="w-full p-3 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 inline-block font-medium transition-colors"
+                  size="lg"
+                  color="primary"
+                  className="w-full"
                 >
                   Sign in
-                </Link>
-
-                <Link
+                </Button>
+                <Button
+                  as={Link}
                   href="/register"
-                  className="w-full p-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 inline-block font-medium transition-colors dark:hover:bg-blue-950/50"
+                  variant="ghost"
+                  size="lg"
+                  color="primary"
+                  className="w-full"
                 >
                   Create account
-                </Link>
+                </Button>
               </>
             )}
           </div>

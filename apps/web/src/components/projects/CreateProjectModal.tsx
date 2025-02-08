@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useCreateProject } from "@/hooks/useProjects";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 type CreateProjectModalProps = {
   isOpen: boolean;
@@ -61,42 +62,22 @@ export function CreateProjectModal({
       footer={footer}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium mb-1 text-card-foreground"
-          >
-            Project name
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 rounded-md border border-border bg-background text-foreground
-                     focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     placeholder:text-muted-foreground"
-            required
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="repository"
-            className="block text-sm font-medium mb-1"
-          >
-            Repository URL
-          </label>
-          <input
-            type="text"
-            id="repository"
-            value={repository}
-            onChange={(e) => setRepository(e.target.value)}
-            className="w-full p-2 rounded-md border border-border bg-background text-foreground
-                     focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     placeholder:text-muted-foreground"
-            required
-          />
-        </div>
+        <Input
+          label="Project name"
+          placeholder="Enter project name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <Input
+          label="Repository URL"
+          placeholder="Enter repository URL"
+          id="repository"
+          value={repository}
+          onChange={(e) => setRepository(e.target.value)}
+          required
+        />
       </form>
     </Modal>
   );

@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/Button";
-import { FormInput } from "@/components/ui/FormInput";
+import { Input } from "@/components/ui/Input";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { RegisterRequest } from "@/types";
 
@@ -40,22 +40,22 @@ export default function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
-      <FormInput
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <Input
         type="text"
         name="name"
-        label="Full Name"
+        label="Full name"
         placeholder="Enter your full name"
         required
       />
-      <FormInput
+      <Input
         type="email"
         name="email"
         label="Email"
         placeholder="Enter your email"
         required
       />
-      <FormInput
+      <Input
         type="password"
         name="password"
         label="Password"

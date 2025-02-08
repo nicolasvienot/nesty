@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { PublicRoute } from "@/components/auth/PublicRoute";
 import RegisterForm from "@/components/auth/RegisterForm";
+import { Card } from "@/components/ui/Card";
 import { Header } from "@/components/header/Header";
 
 export default function RegisterPage() {
   return (
     <PublicRoute>
       <Header />
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-24">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 pt-24">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-foreground">
@@ -17,9 +18,9 @@ export default function RegisterPage() {
               Join Nesty to manage your projects
             </p>
           </div>
-          <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+          <Card className="p-4">
             <RegisterForm />
-          </div>
+          </Card>
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link

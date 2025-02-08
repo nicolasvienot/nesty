@@ -7,6 +7,7 @@ import { useProjects, useDeleteProject } from "@/hooks/useProjects";
 import { Header } from "@/components/header/Header";
 import PrivateRoute from "@/components/auth/PrivateRoute";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { CreateProjectModal } from "@/components/projects/CreateProjectModal";
 import { DeleteProjectModal } from "@/components/projects/DeleteProjectModal";
 import { Project } from "@/types";
@@ -36,55 +37,45 @@ export default function DashboardPage() {
   return (
     <PrivateRoute>
       <Header />
-      <div className="min-h-screen bg-background p-4 pt-24">
+      <div className="min-h-screen bg-background p-6 pt-24">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
-
+          <h1 className="text-4xl font-bold mb-4">Dashboard</h1>
           <div className="grid gap-6">
-            <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-              <h2 className="text-2xl font-semibold mb-4">
-                Welcome {user?.name}
-              </h2>
+            <Card className="p-4" title={`Welcome ${user?.name}`}>
               <div className="space-y-2">
                 <p className="text-muted-foreground">Email: {user?.email}</p>
               </div>
-            </div>
-
-            <div className="mt-8">
+            </Card>
+            <div>
               <h2 className="text-2xl font-semibold mb-4">Projects</h2>
-              <div className="mb-6">
+              <div className="mb-4">
                 <Button onPress={createModal.onOpen}>Create project</Button>
               </div>
               {isLoading ? (
-                <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+                <Card className="p-4">
                   <div className="animate-pulse flex space-x-4">
                     <div className="flex-1 space-y-4 py-1">
                       <div className="h-4 bg-muted rounded w-3/4"></div>
                       <div className="h-4 bg-muted rounded"></div>
                     </div>
                   </div>
-                </div>
+                </Card>
               ) : (
                 <>
                   {projects?.length === 0 ? (
-                    <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+                    <Card className="p-4">
                       <p className="text-muted-foreground">
                         You don&apos;t have any projects yet.
                       </p>
-                    </div>
+                    </Card>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {projects?.map((project) => (
-                        <div
+                        <Card
+                          className="p-4"
                           key={project.id}
-                          className="bg-card p-6 rounded-lg shadow-sm border border-border"
+                          title={project.name}
                         >
-                          <h3 className="text-xl font-semibold mb-2 text-card-foreground">
-                            {project.name}
-                          </h3>
-                          <p className="text-muted-foreground">
-                            {project.repository}
-                          </p>
                           <div className="mt-4 flex justify-end">
                             <Button
                               onPress={() => handleDeleteClick(project)}
@@ -94,7 +85,7 @@ export default function DashboardPage() {
                               Remove project
                             </Button>
                           </div>
-                        </div>
+                        </Card>
                       ))}
                     </div>
                   )}
