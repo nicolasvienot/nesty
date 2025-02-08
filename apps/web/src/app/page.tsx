@@ -22,16 +22,15 @@ export default function HomePage() {
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-24">
         <div className="w-full max-w-md space-y-8 text-center">
           <div className="space-y-4">
-            <h1 className="text-5xl font-extrabold tracking-tight">
+            <h1 className="text-5xl font-extrabold tracking-tight text-foreground">
               Welcome to Nesty
             </h1>
-            <p className="text-lg text-foreground/60 tracking-wide">
+            <p className="text-lg text-muted-foreground tracking-wide">
               {isAuthenticated
                 ? "Continue to your dashboard to get started"
                 : "Get started by signing in or creating an account"}
             </p>
           </div>
-
           <div className="space-y-4">
             {isAuthenticated ? (
               <Link

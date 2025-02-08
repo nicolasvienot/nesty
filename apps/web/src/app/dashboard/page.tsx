@@ -25,12 +25,12 @@ export default function DashboardPage() {
           <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
 
           <div className="grid gap-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+            <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
               <h2 className="text-2xl font-semibold mb-4">
                 Welcome {user?.name}
               </h2>
               <div className="space-y-2">
-                <p className="text-foreground/60">Email: {user?.email}</p>
+                <p className="text-muted-foreground">Email: {user?.email}</p>
               </div>
             </div>
 
@@ -47,19 +47,19 @@ export default function DashboardPage() {
               </div>
 
               {isLoading ? (
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+                <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
                   <div className="animate-pulse flex space-x-4">
                     <div className="flex-1 space-y-4 py-1">
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                      <div className="h-4 bg-muted rounded w-3/4"></div>
+                      <div className="h-4 bg-muted rounded"></div>
                     </div>
                   </div>
                 </div>
               ) : (
                 <>
                   {projects?.length === 0 ? (
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-                      <p className="text-foreground/60">
+                    <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+                      <p className="text-muted-foreground">
                         You don&apos;t have any projects yet.
                       </p>
                     </div>
@@ -68,12 +68,12 @@ export default function DashboardPage() {
                       {projects?.map((project) => (
                         <div
                           key={project.id}
-                          className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition-shadow"
+                          className="bg-card p-6 rounded-lg shadow-sm border border-border"
                         >
-                          <h3 className="text-xl font-semibold mb-2">
+                          <h3 className="text-xl font-semibold mb-2 text-card-foreground">
                             {project.name}
                           </h3>
-                          <p className="text-foreground/60">
+                          <p className="text-muted-foreground">
                             {project.repository}
                           </p>
                           <div className="mt-4 flex justify-end">

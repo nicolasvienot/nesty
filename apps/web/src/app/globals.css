@@ -5,13 +5,25 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Add more light theme variables */
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --border: #e5e7eb;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #111111;
-    --foreground: #ffffff;
-  }
+.dark {
+  --background: #111111;
+  --foreground: #ffffff;
+
+  /* Add more dark theme variables */
+  --muted: #1f2937;
+  --muted-foreground: #9ca3af;
+  --card: #1e1e1e;
+  --card-foreground: #ffffff;
+  --border: #2e2e2e;
 }
 
 body {

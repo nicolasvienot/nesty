@@ -10,15 +10,22 @@ export default function RegisterPage() {
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-24">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold">Create account</h1>
-            <p className="mt-2 text-foreground/60">
+            <h1 className="text-4xl font-bold text-foreground">
+              Create account
+            </h1>
+            <p className="mt-2 text-muted-foreground">
               Join Nesty to manage your projects
             </p>
           </div>
-          <RegisterForm />
-          <p className="text-center text-sm">
+          <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+            <RegisterForm />
+          </div>
+          <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/login" className="text-blue-500 hover:text-blue-600">
+            <Link
+              href="/login"
+              className="text-blue-500 hover:text-blue-600 transition-colors"
+            >
               Sign in
             </Link>
           </p>
