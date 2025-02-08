@@ -14,6 +14,7 @@
   "dependencies": {
     "@heroui/button": "^2.2.10",
     "@heroui/react": "^2.6.14",
+    "@heroui/switch": "^2.2.9",
     "@tanstack/react-query": "^5.66.0",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",

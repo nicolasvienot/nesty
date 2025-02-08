@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { ThemeSwitch } from "@/components/theme/ThemeSwitch";
 
 export function Header() {
   const { isAuthenticated } = useAuthContext();
@@ -19,27 +19,26 @@ export function Header() {
           <Link href="/" className="flex items-center">
             <span className="text-xl font-bold">Nesty</span>
           </Link>
-
           <nav className="flex items-center space-x-4">
-            <ThemeToggle />
             {isAuthenticated && (
               <>
                 {!isDashboard && (
                   <Link
                     href="/dashboard"
-                    className="text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+                    className="text-sm font-medium text-foreground/60 hover:text-foreground"
                   >
                     Dashboard
                   </Link>
                 )}
                 <button
                   onClick={() => logout()}
-                  className="text-sm font-medium text-red-500 hover:text-red-600 transition-colors"
+                  className="text-sm font-medium text-red-500 hover:text-red-600"
                 >
                   Sign out
                 </button>
               </>
             )}
+            <ThemeSwitch />
           </nav>
         </div>
       </div>

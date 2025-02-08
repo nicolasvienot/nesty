@@ -68,7 +68,8 @@ export default function DashboardPage() {
                       {projects?.map((project) => (
                         <div
                           key={project.id}
-                          className="bg-card p-6 rounded-lg shadow-sm border border-border"
+                          className="bg-card p-6 rounded-lg shadow-sm border border-border
+                                   hover:shadow-md transition-all duration-200"
                         >
                           <h3 className="text-xl font-semibold mb-2 text-card-foreground">
                             {project.name}
