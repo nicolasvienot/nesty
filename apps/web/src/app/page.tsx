@@ -11,7 +11,7 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex h-dvh items-center justify-center">
         <LoadingSpinner />
       </div>
     );
@@ -20,7 +20,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 pt-24">
+      <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 pt-24">
         <div className="w-full max-w-md space-y-8 text-center">
           <div className="space-y-4">
             <h1 className="text-5xl font-extrabold tracking-tight text-foreground">

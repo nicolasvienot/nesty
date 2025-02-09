@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <PublicRoute>
       <Header />
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 pt-24">
+      <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 pt-24">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-foreground">Welcome back</h1>

@@ -27,7 +27,7 @@ export function PublicRoute({ children }: PublicRouteProps) {
 
   if (isLoading || !isInitialized) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex h-dvh items-center justify-center">
         <LoadingSpinner />
       </div>
     );
