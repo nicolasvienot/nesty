@@ -29,6 +29,8 @@ jobs:
           file: apps/api/Dockerfile
           push: true
           tags: nicolasvienot/nesty-api:latest
+          cache-from: type=registry,ref=nicolasvienot/nesty-api:latest
+          cache-to: type=inline
 
       - name: Build and push Web image
         uses: docker/build-push-action@v4
@@ -37,8 +39,17 @@ jobs:
           file: apps/web/Dockerfile
           push: true
           tags: nicolasvienot/nesty-web:latest
+          cache-from: type=registry,ref=nicolasvienot/nesty-web:latest
+          cache-to: type=inline
           build-args: |
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to EC2
         run: |
