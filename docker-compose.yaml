@@ -6,6 +6,7 @@ services:
     environment:
       DATABASE_URL: "${DATABASE_URL}"
       JWT_SECRET: "${JWT_SECRET}"
+      API_URL: "${API_URL}"
       FRONTEND_URL: "${FRONTEND_URL}"
       GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
       GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
