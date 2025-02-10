@@ -20,6 +20,7 @@ nesty/
 - Yarn package manager
 - MongoDB (for the API)
 - Docker (optional, for containerized deployment)
+- Google OAuth credentials (for Google authentication)
 
 ## Installation
 
@@ -84,33 +85,94 @@ yarn build
 cd apps/web
 ```
 
+## Environment Variables
+
+### API (.env)
+
+- `DATABASE_URL`: MongoDB connection string
+- `JWT_SECRET`: Secret key for JWT authentication
+- `API_URL`: URL of the NestJS API
+- `FRONTEND_URL`: URL of the Next.js frontend
+- `GOOGLE_CLIENT_ID`: Google OAuth client ID
+- `GOOGLE_CLIENT_SECRET`: Google OAuth client secret
+- `GOOGLE_REDIRECT_URI`: Redirect URL after Google authentication
+
+### Frontend (.env)
+
+- `NEXT_PUBLIC_API_URL`: URL of the NestJS API
+
 ## Docker Deployment
 
-1. Build and run using docker-compose:
+There are two ways to deploy the application using Docker:
 
-   ```bash
-   docker-compose up --build
-   ```
+### 1. Using Pre-built Images
 
-   This will start:
+The easiest way is to use the pre-built images from Docker Hub:
 
-   - API on port 8000
-   - Frontend on port 3000
-   - Caddy reverse proxy on ports 80/443
+```bash
+# Pull and run using docker-compose
+git clone https://github.com/nicolasvienot/nesty.git
+cd nesty
+docker-compose up -d
+```
 
-2. Environment variables needed:
-   - `DATABASE_URL`: MongoDB connection string
-   - `JWT_SECRET`: Secret key for JWT authentication
-   - `FRONTEND_URL`: URL of the Next.js frontend
-   - `NEXT_PUBLIC_API_URL`: URL of the NestJS API
+This will:
+
+- Pull images: `nicolasvienot/nesty-api:latest` and `nicolasvienot/nesty-web:latest`
+- Set up Caddy as reverse proxy
+- Configure all services with proper environment variables
+
+### 2. Building Images Locally
+
+Alternatively, you can build the images yourself:
+
+```bash
+# Build and run API
+cd apps/api
+docker build -t nesty-api .
+docker run -p 8000:8000 \
+  --env-file .env \
+  nesty-api
+
+# Build and run Frontend
+cd apps/web
+docker build -t nesty-web \
+  --build-arg NEXT_PUBLIC_API_URL=http://localhost:8000 .
+docker run -p 3000:3000 nesty-web
+```
+
+### Environment Setup
+
+When using docker-compose, create a `.env` file in the root directory with:
+
+```env
+DATABASE_URL=your_mongodb_url
+JWT_SECRET=your_jwt_secret
+FRONTEND_URL=your_frontend_url
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=your_redirect_uri
+```
+
+### Production Deployment
+
+The project includes GitHub Actions workflow that automatically:
+
+1. Builds new Docker images
+2. Pushes them to Docker Hub
+3. Deploys to EC2 using docker-compose
+4. Sets up Caddy for HTTPS and reverse proxy
 
 ## API Endpoints
 
 ### Authentication
 
-- **POST /auth/login**: Authenticate a user and receive a JWT token
-- **POST /auth/register**: Register a new user and receive a JWT token
-- **GET /auth/session**: Get the current authenticated user's session from JWT token
+- **POST /auth/login**: Authenticate a user and receive a JWT token in HTTP-only cookie
+- **POST /auth/register**: Register a new user and receive a JWT token in HTTP-only cookie
+- **POST /auth/logout**: Clear authentication cookie
+- **GET /auth/session**: Get the current authenticated user's session
+- **GET /auth/google**: Initiate Google OAuth authentication
+- **GET /auth/google/callback**: Handle Google OAuth callback
 
 ### Users
 

@@ -82,4 +82,28 @@ export class AuthController {
   getSession(@User() user: UserType): PublicUser {
     return user;
   }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {
+    // This method is intentionally empty
+    // When user clicks "Continue with Google", they hit this endpoint
+    // AuthGuard('google') automatically redirects to Google's consent screen
+    // After user consents, Google redirects back to your callback URL
+  }
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRedirect(
+    @User() user: UserType,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const auth = this.authService.login(user);
+
+    res.cookie(COOKIE_NAME, auth.access_token, cookieConfig);
+
+    res.redirect(
+      process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/dashboard',
+    );
+  }
 }

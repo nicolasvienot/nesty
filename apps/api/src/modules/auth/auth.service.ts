@@ -31,4 +31,31 @@ export class AuthService {
       },
     };
   }
+
+  async validateOrCreateGoogleUser(googleUser: {
+    email: string;
+    name: string;
+    googleId: string;
+  }) {
+    let user = await this.usersService.findByEmail(googleUser.email);
+
+    if (user) {
+      // If user exists but doesn't have googleId, link the account
+      if (!user.googleId) {
+        user = await this.usersService.update(user.id, {
+          googleId: googleUser.googleId,
+        });
+      }
+    } else {
+      // Create new user if doesn't exist
+      user = await this.usersService.create({
+        email: googleUser.email,
+        name: googleUser.name,
+        googleId: googleUser.googleId,
+        password: Math.random().toString(36).slice(-8),
+      });
+    }
+
+    return user;
+  }
 }

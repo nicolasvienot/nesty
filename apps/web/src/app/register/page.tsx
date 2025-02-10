@@ -3,6 +3,7 @@ import { PublicRoute } from "@/components/auth/PublicRoute";
 import RegisterForm from "@/components/auth/RegisterForm";
 import { Card } from "@/components/ui/Card";
 import { Header } from "@/components/header/Header";
+import { GoogleAuthButton } from "@/components/auth/GoogleAuthButton";
 
 export default function RegisterPage() {
   return (
@@ -19,7 +20,22 @@ export default function RegisterPage() {
             </p>
           </div>
           <Card className="p-4">
-            <RegisterForm />
+            <div className="space-y-4">
+              <GoogleAuthButton />
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-content1 px-2 text-muted-foreground">
+                    Or continue with email
+                  </span>
+                </div>
+              </div>
+
+              <RegisterForm />
+            </div>
           </Card>
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
