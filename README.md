@@ -197,6 +197,36 @@ The project includes GitHub Actions workflow that automatically:
 - **PUT /projects/:id**: Update a project's information (requires authentication)
 - **DELETE /projects/:id**: Delete a project (requires authentication)
 
+## Scheduler System
+
+The API implements a scheduling system using `@nestjs/schedule` for handling timed tasks. The scheduler system:
+
+- Executes cron jobs at specified intervals
+- Handles daily, hourly, and custom scheduled tasks
+- Provides built-in error handling and logging
+- Supports various cron patterns using CronExpression
+
+### Scheduler Configuration
+
+The scheduler system is automatically configured when running the API. It supports:
+
+- Cron jobs (time-based scheduled tasks)
+- Intervals (recurring tasks)
+- Timeouts (delayed tasks)
+
+Example cron patterns:
+
+```typescript
+// Daily at midnight
+@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+
+// Every hour
+@Cron(CronExpression.EVERY_HOUR)
+
+// Custom pattern (every 5 minutes)
+@Cron('*/5 * * * *')
+```
+
 ## Queue System
 
 The API implements a job queue system using Bull and Redis for handling asynchronous tasks. The queue system:
