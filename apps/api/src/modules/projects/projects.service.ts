@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ProjectsRepository } from '@/modules/projects/projects.repository';
+import { QueueService } from '@/modules/queue/queue.service';
 import {
   Project,
   CreateProject,
@@ -8,10 +9,20 @@ import {
 
 @Injectable()
 export class ProjectsService {
-  constructor(private readonly projectsRepository: ProjectsRepository) {}
+  constructor(
+    private readonly projectsRepository: ProjectsRepository,
+    private readonly queueService: QueueService,
+  ) {}
 
   async create(userId: string, payload: CreateProject): Promise<Project> {
-    return await this.projectsRepository.create(userId, payload);
+    const project = await this.projectsRepository.create(userId, payload);
+
+    await this.queueService.addJob('process-project-created', {
+      projectId: project.id,
+      userId,
+    });
+
+    return project;
   }
 
   async findAll(userId: string): Promise<Project[]> {
