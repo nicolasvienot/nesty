@@ -19,6 +19,7 @@ nesty/
 - Node.js 20 or later
 - Yarn package manager
 - MongoDB (for the API)
+- Redis (for queue system)
 - Docker (optional, for containerized deployment)
 - Google OAuth credentials (for Google authentication)
 
@@ -96,6 +97,9 @@ cd apps/web
 - `GOOGLE_CLIENT_ID`: Google OAuth client ID
 - `GOOGLE_CLIENT_SECRET`: Google OAuth client secret
 - `GOOGLE_REDIRECT_URI`: Redirect URL after Google authentication
+- `REDIS_HOST`: Redis host (default: localhost)
+- `REDIS_PORT`: Redis port (default: 6379)
+- `REDIS_PASSWORD`: Redis password for authentication
 
 ### Frontend (.env)
 
@@ -152,6 +156,9 @@ FRONTEND_URL=your_frontend_url
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_REDIRECT_URI=your_redirect_uri
+REDIS_HOST=your_redis_host
+REDIS_PORT=your_redis_port
+REDIS_PASSWORD=your_redis_password
 ```
 
 ### Production Deployment
@@ -189,6 +196,23 @@ The project includes GitHub Actions workflow that automatically:
 - **GET /projects/:id**: Retrieve a specific project by ID (requires authentication)
 - **PUT /projects/:id**: Update a project's information (requires authentication)
 - **DELETE /projects/:id**: Delete a project (requires authentication)
+
+## Queue System
+
+The API implements a job queue system using Bull and Redis for handling asynchronous tasks. The queue system:
+
+- Processes background jobs reliably
+- Handles automatic retries with exponential backoff
+- Provides job status monitoring
+- Ensures data persistence through Redis
+
+### Queue Configuration
+
+The queue system is automatically configured when running the API, either directly or through Docker. It requires:
+
+- Redis server running
+- Proper Redis credentials in environment variables
+- Queue module configured in the API
 
 ## License
 
