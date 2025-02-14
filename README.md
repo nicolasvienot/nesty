@@ -54,7 +54,7 @@ yarn dev
 
 # To start the REPL development server:
 cd apps/api
-yarn dev --entryFile ./main-repl.js
+yarn dev --entryFile ./repl.js
 ```
 
 ```bash
