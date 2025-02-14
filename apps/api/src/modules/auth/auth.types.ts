@@ -7,9 +7,16 @@ export type AuthRequest = Request & {
 
 export type AuthResponse = {
   user: PublicUser;
+  access_token: string;
 };
 
 export type JwtPayload = {
   email: string;
   sub: string;
+};
+
+export type GoogleUser = {
+  email: string;
+  name: string;
+  googleId: string;
 };

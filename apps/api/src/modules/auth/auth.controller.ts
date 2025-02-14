@@ -60,11 +60,8 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<Omit<AuthResponse, 'access_token'>> {
     try {
-      const user = await this.usersService.create(createUserDto);
-      const auth = this.authService.login(user);
-
+      const auth = await this.authService.register(createUserDto);
       res.cookie(COOKIE_NAME, auth.access_token, cookieConfig);
-
       return { user: auth.user };
     } catch (error) {
       handlePrismaError(error);

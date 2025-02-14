@@ -100,6 +100,8 @@ cd apps/web
 - `REDIS_HOST`: Redis host (default: localhost)
 - `REDIS_PORT`: Redis port (default: 6379)
 - `REDIS_PASSWORD`: Redis password for authentication
+- `SENDGRID_API_KEY`: API key for SendGrid
+- `SENDGRID_FROM_EMAIL`: Default sender email address for SendGrid
 
 ### Frontend (.env)
 
@@ -159,6 +161,8 @@ GOOGLE_REDIRECT_URI=your_redirect_uri
 REDIS_HOST=your_redis_host
 REDIS_PORT=your_redis_port
 REDIS_PASSWORD=your_redis_password
+SENDGRID_API_KEY=your_sendgrid_api_key
+SENDGRID_FROM_EMAIL=your_sendgrid_from_email
 ```
 
 ### Production Deployment
@@ -243,6 +247,12 @@ The queue system is automatically configured when running the API, either direct
 - Redis server running
 - Proper Redis credentials in environment variables
 - Queue module configured in the API
+
+### Jobs
+
+The following jobs are processed by the queue system:
+
+- **process-user-created**: Triggered when a new user is created. Sends a welcome email to the user using the `MailerService`.
 
 ## License
 

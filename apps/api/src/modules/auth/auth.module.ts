@@ -6,6 +6,7 @@ import { JwtStrategy } from '@/modules/auth/strategies/jwt.strategy';
 import { AuthService } from '@/modules/auth/auth.service';
 import { AuthController } from '@/modules/auth/auth.controller';
 import { UsersModule } from '@/modules/users/users.module';
+import { QueueModule } from '@/modules/queue/queue.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersModule } from '@/modules/users/users.module';
       signOptions: { expiresIn: '1d' },
     }),
     UsersModule,
+    QueueModule,
   ],
   controllers: [AuthController],
   providers: [GoogleStrategy, JwtStrategy, AuthService],

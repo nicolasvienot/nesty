@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UsersRepository } from '@/modules/users/users.repository';
 import { User, CreateUser, UpdateUser } from '@/modules/users/users.types';
+
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
