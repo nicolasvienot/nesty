@@ -86,7 +86,7 @@ export class AuthController {
     // This method is intentionally empty
     // When user clicks "Continue with Google", they hit this endpoint
     // AuthGuard('google') automatically redirects to Google's consent screen
-    // After user consents, Google redirects back to your callback URL
+    // After user consents, Google redirects back to the callback URL
   }
 
   @Get('google/callback')
@@ -101,6 +101,30 @@ export class AuthController {
 
     res.redirect(
       process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/dashboard',
+    );
+  }
+
+  @Get('github')
+  @UseGuards(AuthGuard('github'))
+  async githubAuth() {
+    // This method is intentionally empty
+    // When user clicks "Continue with GitHub", they hit this endpoint
+    // AuthGuard('github') automatically redirects to GitHub's consent screen
+    // After user consents, GitHub redirects back to the callback URL
+  }
+
+  @Get('github/callback')
+  @UseGuards(AuthGuard('github'))
+  githubAuthRedirect(
+    @User() user: UserType,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const auth = this.authService.login(user);
+
+    res.cookie(COOKIE_NAME, auth.access_token, cookieConfig);
+
+    res.redirect(
+      process.env.GITHUB_REDIRECT_URI || 'http://localhost:3000/dashboard',
     );
   }
 }

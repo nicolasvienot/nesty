@@ -20,3 +20,9 @@ export type GoogleUser = {
   name: string;
   googleId: string;
 };
+
+export type GithubUser = {
+  email: string;
+  name: string;
+  githubId: string;
+};

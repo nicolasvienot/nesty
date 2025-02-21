@@ -4,7 +4,11 @@ import * as crypto from 'crypto';
 import { UsersService } from '@/modules/users/users.service';
 import { QueueService } from '@/modules/queue/queue.service';
 import { User, CreateUser } from '@/modules/users/users.types';
-import { AuthResponse, GoogleUser } from '@/modules/auth/auth.types';
+import {
+  AuthResponse,
+  GoogleUser,
+  GithubUser,
+} from '@/modules/auth/auth.types';
 
 @Injectable()
 export class AuthService {
@@ -69,6 +73,37 @@ export class AuthService {
       email: googleUser.email,
       name: googleUser.name,
       googleId: googleUser.googleId,
+      password: crypto.randomBytes(32).toString('hex'),
+    });
+
+    await this.queueService.addJob('process-user-created', {
+      userId: newUser.id,
+    });
+    return newUser;
+  }
+
+  async validateOrCreateGithubUser(githubUser: GithubUser): Promise<User> {
+    const user = await this.usersService.findByEmail(githubUser.email);
+
+    if (user) {
+      // If user exists but doesn't have githubId, link the account
+      if (!user.githubId) {
+        const updatedUser = await this.usersService.update(user.id, {
+          githubId: githubUser.githubId,
+        });
+        if (!updatedUser) {
+          throw new Error(`Failed to update user with id ${user.id}`);
+        }
+        return updatedUser;
+      }
+      return user;
+    }
+
+    // Create new user if doesn't exist
+    const newUser = await this.usersService.create({
+      email: githubUser.email,
+      name: githubUser.name,
+      githubId: githubUser.githubId,
       password: crypto.randomBytes(32).toString('hex'),
     });
 

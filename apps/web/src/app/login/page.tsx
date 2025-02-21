@@ -4,13 +4,14 @@ import LoginForm from "@/components/auth/LoginForm";
 import { Card } from "@/components/ui/Card";
 import { Header } from "@/components/header/Header";
 import { GoogleAuthButton } from "@/components/auth/GoogleAuthButton";
+import { GitHubAuthButton } from "@/components/auth/GitHubAuthButton";
 
 export default function LoginPage() {
   return (
     <PublicRoute>
       <Header />
       <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 pt-24">
-        <div className="w-full max-w-md space-y-8">
+        <div className="w-full max-w-md space-y-4">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-foreground">Welcome back</h1>
             <p className="mt-2 text-muted-foreground">
@@ -19,8 +20,10 @@ export default function LoginPage() {
           </div>
           <Card className="p-4">
             <div className="space-y-4">
-              <GoogleAuthButton />
-
+              <div className="flex flex-col gap-2">
+                <GoogleAuthButton />
+                <GitHubAuthButton />
+              </div>
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />

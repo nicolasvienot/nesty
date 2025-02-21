@@ -22,6 +22,7 @@ nesty/
 - Redis (for queue system)
 - Docker (optional, for containerized deployment)
 - Google OAuth credentials (for Google authentication)
+- GitHub OAuth credentials (for GitHub authentication)
 
 ## Installation
 
@@ -97,6 +98,9 @@ cd apps/web
 - `GOOGLE_CLIENT_ID`: Google OAuth client ID
 - `GOOGLE_CLIENT_SECRET`: Google OAuth client secret
 - `GOOGLE_REDIRECT_URI`: Redirect URL after Google authentication
+- `GITHUB_CLIENT_ID`: GitHub OAuth client ID
+- `GITHUB_CLIENT_SECRET`: GitHub OAuth client secret
+- `GITHUB_REDIRECT_URI`: Redirect URL after GitHub authentication
 - `REDIS_HOST`: Redis host (default: localhost)
 - `REDIS_PORT`: Redis port (default: 6379)
 - `REDIS_PASSWORD`: Redis password for authentication
@@ -158,6 +162,9 @@ FRONTEND_URL=your_frontend_url
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_REDIRECT_URI=your_redirect_uri
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+GITHUB_REDIRECT_URI=your_github_redirect_uri
 REDIS_HOST=your_redis_host
 REDIS_PORT=your_redis_port
 REDIS_PASSWORD=your_redis_password
@@ -184,6 +191,8 @@ The project includes GitHub Actions workflow that automatically:
 - **GET /auth/session**: Get the current authenticated user's session
 - **GET /auth/google**: Initiate Google OAuth authentication
 - **GET /auth/google/callback**: Handle Google OAuth callback
+- **GET /auth/github**: Initiate GitHub OAuth authentication
+- **GET /auth/github/callback**: Handle GitHub OAuth callback
 
 ### Users
 

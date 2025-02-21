@@ -31,6 +31,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       throw new Error('No email provided from Google');
     }
 
+    if (!name) {
+      throw new Error('No name provided from Google');
+    }
+
     const userDto = {
       email: emails[0].value,
       name: name?.givenName + ' ' + name?.familyName,

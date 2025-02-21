@@ -4,6 +4,7 @@ export type User = {
   email: string;
   password: string;
   googleId: string | null;
+  githubId: string | null;
 };
 
 export type PublicUser = {
@@ -17,6 +18,7 @@ export type CreateUser = {
   email: string;
   password: string;
   googleId?: string | null;
+  githubId?: string | null;
 };
 
 export type UpdateUser = Partial<CreateUser>;
